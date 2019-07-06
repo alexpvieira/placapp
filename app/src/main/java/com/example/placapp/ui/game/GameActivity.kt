@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.placapp.R
 import com.example.placapp.ui.game.awayteam.AwayTeamFragment
@@ -18,19 +19,22 @@ import kotlinx.android.synthetic.main.activity_game.*
 
 class GameActivity : AppCompatActivity() {
 
-    var homeTeamName = ""
-    var awayTeamName = ""
-    var eventName = ""
+    private lateinit var gameViewModel: GameViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
+        gameViewModel = ViewModelProviders.of(this)
+            .get(GameViewModel::class.java)
+
         ivBack.setOnClickListener {
             onBackPressed()
         }
 
-        showEventFragment()
+        if (savedInstanceState == null)
+            showEventFragment()
+
         registerBroadcastReceiver()
     }
 
@@ -58,17 +62,17 @@ class GameActivity : AppCompatActivity() {
     private val myReceiver = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, intent: Intent) {
             if (intent.hasExtra("event_name")) {
-                eventName = intent.getStringExtra("event_name")
+                gameViewModel.eventName = intent.getStringExtra("event_name")
                 next(HomeTeamFragment())
             }
 
             if (intent.hasExtra("home_team_name")) {
-                homeTeamName = intent.getStringExtra("home_team_name")
+                gameViewModel.homeTeamName = intent.getStringExtra("home_team_name")
                 next(AwayTeamFragment())
             }
 
             if (intent.hasExtra("away_team_name")) {
-                awayTeamName = intent.getStringExtra("away_team_name")
+                gameViewModel.awayTeamName = intent.getStringExtra("away_team_name")
                 showScore()
             }
         }
@@ -76,9 +80,9 @@ class GameActivity : AppCompatActivity() {
 
     private fun showScore() {
         val intent = Intent(this, ScoreActivity::class.java)
-        intent.putExtra("event_name", eventName)
-        intent.putExtra("home_team_name", homeTeamName)
-        intent.putExtra("away_team_name", awayTeamName)
+        intent.putExtra("event_name", gameViewModel.eventName)
+        intent.putExtra("home_team_name", gameViewModel.homeTeamName)
+        intent.putExtra("away_team_name", gameViewModel.awayTeamName)
         startActivity(intent)
         finish()
     }
