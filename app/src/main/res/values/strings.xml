@@ -8,4 +8,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="away_team">Time visitante</string>
+    <string name="what_is_the_away_team">Qual é o time visitante?</string>
+    <string name="ex_real_madrid">Ex.: Real Madrid</string>
+    <string name="next">Próximo</string>
+    <string name="lets_start">Vamos começar</string>
+    <string name="what_is_the_event_name">Qual o nome do evento?</string>
+    <string name="ex_world_cup">Ex.: Final do Mundial de Clubes de 2019</string>
+    <string name="home_team">Time da casa!</string>
+    <string name="what_is_the_home_team">Qual é o time mandante?</string>
+    <string name="ex_corinthians">Ex.: Corinthians</string>
 </resources>
